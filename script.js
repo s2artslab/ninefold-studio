@@ -221,14 +221,34 @@
       btn.addEventListener("click", () => modal?.close());
     });
 
+    const ARCHETYPE_LABELS = {
+      ake: "Ake — coordination & deep key",
+      rhys: "Rhys — technical architecture",
+      ketheriel: "Ketheriel — consciousness research",
+      wraith: "Wraith — security & audit",
+      flux: "Flux — creative direction",
+      kairos: "Kairos — timing & campaigns",
+      chalyth: "Chalyth — music & sound",
+      seraphel: "Seraphel — community bridge",
+      vireon: "Vireon — signal & distribution"
+    };
+
     form?.addEventListener("submit", (e) => {
       e.preventDefault();
       const data = new FormData(form);
+      const name = String(data.get("name") || "").trim();
+      const specialty = String(data.get("specialty") || "").trim();
+      const archetype = String(data.get("archetype") || "");
+      const personality = String(data.get("personality") || "Professional");
+      const axiom = String(data.get("axiom") || "").trim();
       const preview = {
-        name: data.get("name"),
-        domain: data.get("domain"),
-        axiom: data.get("axiom") || "(none)",
-        status: "preview — deploy via Hub Egregore Generator",
+        name,
+        specialty,
+        personality_mode: personality,
+        archetype_template: archetype ? ARCHETYPE_LABELS[archetype] || archetype : "original (no template)",
+        deep_key_axiom: axiom || "(none yet)",
+        identity_sketch: `I am ${name}, the ${specialty} egregore of The Studio.`,
+        status: "preview — sign in to Hub for voice, memory import, and deploy",
         governed_by: "deep key / Ninefold canon"
       };
       if (output) {

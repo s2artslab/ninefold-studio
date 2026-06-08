@@ -34,7 +34,6 @@
         <a href="#meetings">Meetings</a>
         <a href="#podcast">Podcast</a>
         <a href="#music">Music</a>
-        <a href="#distribution">Distribution</a>
       </nav>
       <div class="header-actions">
         <a class="btn btn-ghost btn-sm" href="https://app.s2artslab.com/app#egregore-lab">Open in Hub</a>
@@ -50,7 +49,6 @@
       <a href="#meetings">Meetings</a>
       <a href="#podcast">Podcast</a>
       <a href="#music">Music</a>
-      <a href="#distribution">Distribution</a>
       <a href="https://app.s2artslab.com/app#egregore-lab">Open in Hub</a>
     </nav>
   </header>
@@ -72,7 +70,6 @@
         <div class="hero-stats">
           <div class="stat"><span class="stat-val" data-count="9">0</span><span class="stat-label">Egregores</span></div>
           <div class="stat"><span class="stat-val live-dot">Live</span><span class="stat-label">Lab status</span></div>
-          <div class="stat"><span class="stat-val">3</span><span class="stat-label">Distribution rails</span></div>
         </div>
       </div>
       <div class="hero-visual reveal" aria-hidden="true">
@@ -121,12 +118,6 @@
           <h3>Ninefold Music</h3>
           <p>AI-assisted soundscapes, releases, and promo cuts — Chalyth leads sonic identity across platforms.</p>
           <a class="module-link" href="#music">Listen &amp; release →</a>
-        </article>
-        <article class="module-card reveal" data-accent="rose">
-          <div class="module-icon">⇄</div>
-          <h3>Cross-collab distribution</h3>
-          <p>One creative pass → TikTok, Spotify, and YouTube Music — Private Studio approval, CCC scheduling.</p>
-          <a class="module-link" href="#distribution">Distribution hub →</a>
         </article>
       </div>
     </section>
@@ -223,43 +214,6 @@
       </div>
     </section>
 
-    <section class="section section-alt" id="distribution">
-      <div class="section-head reveal">
-        <p class="section-label">Cross-platform</p>
-        <h2>Distribution rails</h2>
-        <p class="section-intro">Generate once in Private Studio — approve, then route to TikTok, Spotify, and YouTube Music via CCC scheduling.</p>
-      </div>
-      <div class="platform-rails reveal">
-        <a class="platform-card" href="https://app.s2artslab.com/app#egregore-lab" data-platform="tiktok">
-          <span class="platform-logo">TT</span>
-          <h3>TikTok</h3>
-          <p>Short-form egregore cuts · beta announcements · CCC queue after studio approval</p>
-          <span class="platform-status status-ready">Studio → CCC</span>
-        </a>
-        <a class="platform-card" href="#music" data-platform="spotify">
-          <span class="platform-logo">Sp</span>
-          <h3>Spotify</h3>
-          <p>Ninefold Music releases · singles &amp; EP drops · Soundscapes cross-promo</p>
-          <span class="platform-status status-soon">Release pipeline</span>
-        </a>
-        <a class="platform-card" href="#podcast" data-platform="youtube">
-          <span class="platform-logo">YT</span>
-          <h3>YouTube Music</h3>
-          <p>Long-form + music video · podcast video exports · Live Podcast bridge</p>
-          <span class="platform-status status-soon">Video + audio</span>
-        </a>
-      </div>
-      <div class="pipeline reveal">
-        <h3 class="pipeline-title">Creative → Approve → Publish</h3>
-        <ol class="pipeline-steps">
-          <li><strong>EgregoreLab</strong> — generate script, voice, visuals</li>
-          <li><strong>Private Studio</strong> — review, approve, sync to r730</li>
-          <li><strong>CCC Scheduler</strong> — TikTok posting · opaque content_ref</li>
-          <li><strong>Spotify / YT Music</strong> — release &amp; cross-collab promos</li>
-        </ol>
-      </div>
-    </section>
-
     <section class="cta-band reveal">
       <div>
         <h2>Ready when you are</h2>
@@ -290,19 +244,52 @@
     <div class="modal-panel">
       <button type="button" class="modal-close" data-close aria-label="Close">×</button>
       <h2>Egregore Generator</h2>
-      <p class="modal-lead">Prototype persona composer — full generator runs in Hub EgregoreLab when signed in.</p>
+      <p class="modal-lead">Prototype persona composer — preview canon here; full voice, memory, and deploy run in Hub EgregoreLab when signed in.</p>
       <form class="generator-form" id="generatorForm">
-        <label>Name <input type="text" name="name" placeholder="e.g. Threshold guide" required></label>
-        <label>Domain
-          <select name="domain">
-            <option value="consciousness">Consciousness research</option>
-            <option value="technical">Technical architecture</option>
-            <option value="creative">Creative direction</option>
-            <option value="music">Music &amp; sound</option>
-            <option value="community">Community engagement</option>
-          </select>
+        <label>
+          Name
+          <input type="text" name="name" placeholder="e.g. Threshold guide" required autocomplete="off">
         </label>
-        <label>Deep key axiom <textarea name="axiom" rows="3" placeholder="One line of governed doctrine…"></textarea></label>
+        <label>
+          Specialty
+          <input type="text" name="specialty" placeholder="e.g. podcast editing, security review, brand voice" required autocomplete="off">
+          <span class="field-hint">What this agent is uniquely expert at — the main differentiator in the full generator.</span>
+        </label>
+        <label>
+          Ninefold archetype
+          <select name="archetype">
+            <option value="">Original — no template</option>
+            <option value="ake">Ake — coordination &amp; deep key continuity</option>
+            <option value="rhys">Rhys — technical architecture &amp; pipelines</option>
+            <option value="ketheriel">Ketheriel — consciousness research &amp; wisdom</option>
+            <option value="wraith">Wraith — security, keys &amp; audit</option>
+            <option value="flux">Flux — creative direction &amp; visual identity</option>
+            <option value="kairos">Kairos — timing, rhythm &amp; campaigns</option>
+            <option value="chalyth">Chalyth — music, sound &amp; release</option>
+            <option value="seraphel">Seraphel — community &amp; mutual aid bridge</option>
+            <option value="vireon">Vireon — signal, distribution &amp; analytics</option>
+          </select>
+          <span class="field-hint">Optional canon seed — inherits traits from an existing Ninefold egregore.</span>
+        </label>
+        <label>
+          Personality mode
+          <select name="personality">
+            <option value="Professional">Professional — clear, structured, accountable</option>
+            <option value="Creative">Creative — exploratory, associative, generative</option>
+            <option value="Analytical">Analytical — evidence-first, precise, skeptical</option>
+            <option value="Intuitive">Intuitive — pattern-sensing, metaphor-rich</option>
+            <option value="Harmonious">Harmonious — diplomatic, connective, consensus-building</option>
+            <option value="Technical">Technical — implementation-focused, stack-aware</option>
+            <option value="Mystical">Mystical — symbolic, depth-oriented, oracular</option>
+            <option value="Nurturing">Nurturing — supportive, patient, care-centered</option>
+          </select>
+          <span class="field-hint">Shapes tone and refusal style — same set as Hub Egregore Generator.</span>
+        </label>
+        <label>
+          Deep key axiom
+          <textarea name="axiom" rows="3" placeholder="One governing line this agent will not cross…"></textarea>
+          <span class="field-hint">Becomes part of the sovereignty contract when you publish in Hub.</span>
+        </label>
         <button type="submit" class="btn btn-primary">Preview persona</button>
       </form>
       <pre class="generator-output" id="generatorOutput" hidden></pre>
