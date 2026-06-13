@@ -244,7 +244,7 @@
     <div class="modal-panel">
       <button type="button" class="modal-close" data-close aria-label="Close">×</button>
       <h2>Egregore Generator</h2>
-      <p class="modal-lead">Prototype persona composer — preview canon here; full voice, memory, and deploy run in Hub EgregoreLab when signed in.</p>
+      <p class="modal-lead">Full persona composer — same fields as Hub EgregoreLab. Preview or generate here; sign in to Hub to deploy and run voice on r730.</p>
       <form class="generator-form" id="generatorForm">
         <label>
           Name
@@ -290,7 +290,41 @@
           <textarea name="axiom" rows="3" placeholder="One governing line this agent will not cross…"></textarea>
           <span class="field-hint">Becomes part of the sovereignty contract when you publish in Hub.</span>
         </label>
-        <button type="submit" class="btn btn-primary">Preview persona</button>
+        <section class="generator-card generator-card-memory" aria-labelledby="memoryHeading">
+          <h3 id="memoryHeading">ChatGPT memory import <span class="optional-tag">optional</span></h3>
+          <p class="generator-card-lead">Upload a ChatGPT export or other JSON with conversation history to shape personality and knowledge.</p>
+          <input type="file" id="memoryFileInput" accept=".json,application/json" hidden>
+          <div class="generator-card-actions">
+            <button type="button" class="btn btn-primary btn-sm" id="memoryUploadBtn">Upload memory JSON</button>
+            <button type="button" class="btn btn-ghost btn-sm" id="memoryClearBtn" hidden>Clear</button>
+          </div>
+          <p class="memory-status" id="memoryStatus" hidden></p>
+        </section>
+
+        <section class="generator-card generator-card-voice" aria-labelledby="voiceHeading">
+          <h3 id="voiceHeading">Voice customization</h3>
+          <p class="generator-card-lead">Match Hub voice settings — type, speech rate, and pitch.</p>
+          <label>
+            Voice type
+            <select name="voice" id="voiceSelect"></select>
+          </label>
+          <label class="generator-range">
+            Speech rate
+            <output id="voiceRateOut" for="voiceRate">1.0×</output>
+            <input type="range" name="voiceRate" id="voiceRate" min="0.5" max="2" step="0.1" value="1">
+          </label>
+          <label class="generator-range">
+            Pitch
+            <output id="voicePitchOut" for="voicePitch">1.0×</output>
+            <input type="range" name="voicePitch" id="voicePitch" min="0.5" max="2" step="0.1" value="1">
+          </label>
+        </section>
+
+        <label>
+          Description
+          <textarea name="description" rows="3" placeholder="Purpose, tone, and characteristics…"></textarea>
+        </label>
+        <button type="submit" class="btn btn-primary" id="generatorSubmitBtn">Generate egregore</button>
       </form>
       <pre class="generator-output" id="generatorOutput" hidden></pre>
       <a class="btn btn-ghost btn-sm modal-hub-link" href="https://app.s2artslab.com/app#egregore-lab">Continue in Hub →</a>

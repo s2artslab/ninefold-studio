@@ -208,6 +208,35 @@
     const modal = $("#generatorModal");
     const form = $("#generatorForm");
     const output = $("#generatorOutput");
+    const EGREGORE_API = "https://api.s2artslab.com/api/v1/egregores";
+
+    const VOICES = [
+      { name: "Davis (Male, American)", value: "en-US-DavisNeural" },
+      { name: "Christopher (Male, Multilingual)", value: "en-US-ChristopherMultilingualNeural" },
+      { name: "Derek (Male, Multilingual)", value: "en-US-DerekMultilingualNeural" },
+      { name: "William (Male, Multilingual)", value: "en-US-WilliamMultilingualNeural" },
+      { name: "Alloy Turbo (Male, Multilingual)", value: "en-US-AlloyTurboMultilingualNeural" },
+      { name: "Emma (Female, American)", value: "en-US-EmmaNeural" },
+      { name: "Aria (Female, American)", value: "en-US-AriaNeural" },
+      { name: "Jenny (Female, Multilingual)", value: "en-US-JennyMultilingualNeural" },
+      { name: "Michelle (Female, American)", value: "en-US-MichelleNeural" },
+      { name: "Sara (Female, American)", value: "en-US-SaraNeural" },
+      { name: "Brian (Male, British)", value: "en-GB-BrianNeural" },
+      { name: "Ollie (Male, Multilingual)", value: "en-GB-OllieMultilingualNeural" },
+      { name: "Ryan (Male, British)", value: "en-GB-RyanNeural" },
+      { name: "Sonia (Female, British)", value: "en-GB-SoniaNeural" },
+      { name: "Ada (Female, Multilingual)", value: "en-GB-AdaMultilingualNeural" },
+      { name: "Libby (Female, British)", value: "en-GB-LibbyNeural" },
+      { name: "Ken (Male, Australian)", value: "en-AU-KenNeural" },
+      { name: "William (Male, Australian)", value: "en-AU-WilliamMultilingualNeural" },
+      { name: "Natasha (Female, Australian)", value: "en-AU-NatashaNeural" },
+      { name: "Freya (Female, Australian)", value: "en-AU-FreyaNeural" },
+      { name: "Ezinne (Female, Nigerian)", value: "en-NG-EzinneNeural" },
+      { name: "Yan (Female, Hong Kong)", value: "en-HK-YanNeural" }
+    ];
+
+    let chatgptMemoryData = null;
+    let hasMemoryData = false;
 
     $all("[data-open='generator']").forEach((btn) => {
       btn.addEventListener("click", () => modal?.showModal());
@@ -219,6 +248,96 @@
     });
     $all("[data-close]").forEach((btn) => {
       btn.addEventListener("click", () => modal?.close());
+    });
+
+    const voiceSelect = $("#voiceSelect");
+    if (voiceSelect) {
+      VOICES.forEach((v) => {
+        const opt = document.createElement("option");
+        opt.value = v.value;
+        opt.textContent = v.name;
+        voiceSelect.appendChild(opt);
+      });
+    }
+
+    function bindRange(inputId, outputId, formatter) {
+      const input = document.getElementById(inputId);
+      const out = document.getElementById(outputId);
+      if (!input || !out) return;
+      const sync = () => { out.textContent = formatter(parseFloat(input.value)); };
+      input.addEventListener("input", sync);
+      sync();
+    }
+
+    bindRange("voiceRate", "voiceRateOut", (v) => v.toFixed(1) + "×");
+    bindRange("voicePitch", "voicePitchOut", (v) => v.toFixed(1) + "×");
+
+    function validateChatGPTMemory(data) {
+      return Boolean(
+        data &&
+        (data.conversations || data.messages || data.chat_history || data.data)
+      );
+    }
+
+    function setMemoryStatus(text, isError) {
+      const el = $("#memoryStatus");
+      if (!el) return;
+      el.hidden = !text;
+      el.textContent = text || "";
+      el.classList.toggle("is-error", Boolean(isError));
+    }
+
+    function updateMemoryUi() {
+      const clearBtn = $("#memoryClearBtn");
+      const uploadBtn = $("#memoryUploadBtn");
+      if (uploadBtn) {
+        uploadBtn.textContent = hasMemoryData ? "Replace memory JSON" : "Upload memory JSON";
+      }
+      if (clearBtn) clearBtn.hidden = !hasMemoryData;
+      if (hasMemoryData && chatgptMemoryData) {
+        const count =
+          chatgptMemoryData.conversations?.length ??
+          chatgptMemoryData.messages?.length ??
+          chatgptMemoryData.chat_history?.length ??
+          (Array.isArray(chatgptMemoryData.data) ? chatgptMemoryData.data.length : 0);
+        setMemoryStatus("Memory loaded — " + count + " conversation entries.", false);
+      } else {
+        setMemoryStatus("", false);
+      }
+    }
+
+    $("#memoryUploadBtn")?.addEventListener("click", () => {
+      $("#memoryFileInput")?.click();
+    });
+
+    $("#memoryClearBtn")?.addEventListener("click", () => {
+      chatgptMemoryData = null;
+      hasMemoryData = false;
+      const fileInput = $("#memoryFileInput");
+      if (fileInput) fileInput.value = "";
+      updateMemoryUi();
+    });
+
+    $("#memoryFileInput")?.addEventListener("change", (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const jsonData = JSON.parse(String(reader.result || ""));
+          if (!validateChatGPTMemory(jsonData)) {
+            setMemoryStatus("Invalid format — JSON needs conversations, messages, chat_history, or data.", true);
+            return;
+          }
+          chatgptMemoryData = jsonData;
+          hasMemoryData = true;
+          updateMemoryUi();
+        } catch (err) {
+          setMemoryStatus("Could not parse JSON: " + err.message, true);
+        }
+      };
+      reader.onerror = () => setMemoryStatus("Could not read file.", true);
+      reader.readAsText(file);
     });
 
     const ARCHETYPE_LABELS = {
@@ -233,29 +352,103 @@
       vireon: "Vireon — signal & distribution"
     };
 
-    form?.addEventListener("submit", (e) => {
+    function buildPayload(formData) {
+      const name = String(formData.get("name") || "").trim();
+      const specialty = String(formData.get("specialty") || "").trim();
+      const archetype = String(formData.get("archetype") || "");
+      const personality = String(formData.get("personality") || "Professional");
+      const axiom = String(formData.get("axiom") || "").trim();
+      const description = String(formData.get("description") || "").trim();
+      const voice = String(formData.get("voice") || "en-US-DavisNeural");
+      const voiceRate = parseFloat(String(formData.get("voiceRate") || "1"));
+      const voicePitch = parseFloat(String(formData.get("voicePitch") || "1"));
+
+      return {
+        name,
+        specialty,
+        personality,
+        archetype: archetype || null,
+        deepKeyAxiom: axiom,
+        description,
+        isPublic: false,
+        visibility: "private",
+        chatgptMemory: hasMemoryData ? chatgptMemoryData : null,
+        hasMemoryData,
+        inferenceDefault: "groq_byok",
+        voiceProfile: {
+          voice,
+          rate: voiceRate,
+          pitch: voicePitch,
+          volume: 1.0
+        },
+        archetype_template: archetype ? ARCHETYPE_LABELS[archetype] || archetype : "original (no template)",
+        deep_key_axiom: axiom || "(none yet)",
+        identity_sketch: "I am " + name + ", the " + specialty + " egregore of The Studio.",
+        governed_by: "deep key / Ninefold canon"
+      };
+    }
+
+    form?.addEventListener("submit", async (e) => {
       e.preventDefault();
       const data = new FormData(form);
       const name = String(data.get("name") || "").trim();
       const specialty = String(data.get("specialty") || "").trim();
-      const archetype = String(data.get("archetype") || "");
-      const personality = String(data.get("personality") || "Professional");
-      const axiom = String(data.get("axiom") || "").trim();
-      const preview = {
-        name,
-        specialty,
-        personality_mode: personality,
-        archetype_template: archetype ? ARCHETYPE_LABELS[archetype] || archetype : "original (no template)",
-        deep_key_axiom: axiom || "(none yet)",
-        identity_sketch: `I am ${name}, the ${specialty} egregore of The Studio.`,
-        status: "preview — sign in to Hub for voice, memory import, and deploy",
-        governed_by: "deep key / Ninefold canon"
-      };
+      if (!name || !specialty) return;
+
+      const payload = buildPayload(data);
+      const submitBtn = $("#generatorSubmitBtn");
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Generating…";
+      }
+
+      let result = null;
+      let mode = "preview";
+
+      try {
+        const res = await fetch(EGREGORE_API + "/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify(payload)
+        });
+        if (res.ok) {
+          result = await res.json();
+          mode = "generated";
+        }
+      } catch (_) {
+        /* CORS or offline — fall back to local preview */
+      }
+
+      if (!result) {
+        result = {
+          success: true,
+          status: "preview",
+          message: "API unavailable from browser — payload matches Hub; continue in Hub to deploy.",
+          ...payload
+        };
+        if (hasMemoryData) {
+          result.chatgptMemory = {
+            imported: true,
+            conversationCount:
+              chatgptMemoryData.conversations?.length ??
+              chatgptMemoryData.messages?.length ??
+              0
+          };
+        }
+      }
+
       if (output) {
         output.hidden = false;
-        output.textContent = JSON.stringify(preview, null, 2);
+        output.textContent = JSON.stringify({ mode, ...result }, null, 2);
+      }
+
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Generate egregore";
       }
     });
+
+    updateMemoryUi();
   }
 
   document.addEventListener("DOMContentLoaded", () => {

@@ -438,11 +438,12 @@ main { position: relative; z-index: 1; padding-top: var(--header-h); }
 }
 .modal::backdrop { background: rgba(0,0,0,0.65); backdrop-filter: blur(4px); }
 .modal-panel {
-  width: min(540px, calc(100vw - 2rem)); margin: auto;
+  width: min(560px, calc(100vw - 2rem)); max-height: min(90vh, 920px); margin: auto;
   padding: 1.75rem; border-radius: var(--radius);
   background: #12121f; border: 1px solid rgba(255, 255, 255, 0.14);
   box-shadow: var(--shadow); position: relative;
   color: var(--text);
+  display: flex; flex-direction: column; overflow: hidden;
 }
 .modal-panel h2 {
   font-family: var(--display);
@@ -456,10 +457,41 @@ main { position: relative; z-index: 1; padding-top: var(--header-h); }
 }
 .modal-close:hover { color: #f8f8ff; }
 .modal-lead { color: #c8c8e0; font-size: 0.9rem; margin: 0.5rem 0 1.25rem; line-height: 1.5; }
+.generator-form {
+  flex: 1; overflow-y: auto; padding-right: 0.25rem;
+  scrollbar-gutter: stable;
+}
 .generator-form label {
   display: block; font-size: 0.88rem; font-weight: 500; margin-bottom: 1rem;
   color: #ececf8;
 }
+.generator-form label.generator-range output {
+  float: right; font-weight: 600; color: #22d3ee; font-size: 0.82rem;
+}
+.generator-form input[type="range"] {
+  width: 100%; margin-top: 0.5rem; accent-color: #a855f7;
+}
+.generator-card {
+  margin-bottom: 1rem; padding: 1rem 1.1rem; border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+.generator-card h3 {
+  margin: 0 0 0.35rem; font-size: 0.95rem; font-weight: 600; color: #f0f0ff;
+}
+.generator-card-memory { background: rgba(59, 130, 246, 0.08); border-color: rgba(59, 130, 246, 0.25); }
+.generator-card-voice { background: rgba(168, 85, 247, 0.08); border-color: rgba(168, 85, 247, 0.25); }
+.generator-card-lead {
+  margin: 0 0 0.75rem; font-size: 0.8rem; line-height: 1.45; color: #a8a8c8;
+}
+.generator-card-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+.optional-tag {
+  font-size: 0.72rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em;
+  color: #9898b8; margin-left: 0.35rem;
+}
+.memory-status {
+  margin: 0.65rem 0 0; font-size: 0.8rem; color: #34d399; line-height: 1.4;
+}
+.memory-status.is-error { color: #fb7185; }
 .generator-form .field-hint {
   display: block; margin-top: 0.35rem;
   font-size: 0.78rem; font-weight: 400; line-height: 1.45;
