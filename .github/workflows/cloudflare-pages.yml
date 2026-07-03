@@ -1,8 +1,7 @@
 name: Deploy to Cloudflare Pages
 
 on:
-  push:
-    branches: [main]
+  # Auto-deploy on push disabled — deploy locally with wrangler pages deploy
   workflow_dispatch:
 
 jobs:
