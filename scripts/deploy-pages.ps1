@@ -44,6 +44,9 @@ Or add config/cloudflare.env (see s2-ecosystem-v2/config/cloudflare.env.example)
 Write-Host "Deploying Ninefold Studio AI Lab to Cloudflare Pages: $ProjectName"
 Write-Host "Production URL: https://ninefold-studio.s2artslab.com"
 
+$visibility = Join-Path (Resolve-Path (Join-Path $root "..\..\shared\s2-visibility")) "Invoke-S2Visibility.ps1"
+& $visibility -Surface ninefoldStudio -WebDir $root
+
 if (-not $env:CLOUDFLARE_ACCOUNT_ID) {
   $env:CLOUDFLARE_ACCOUNT_ID = "28971ca36b16ff54bd6811fe911d296e"
 }

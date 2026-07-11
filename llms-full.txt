@@ -1,0 +1,9 @@
+# Ninefold Studio Full Public Context
+
+## Ninefold Studio Music
+
+URL: https://ninefold-studio.s2artslab.com/
+
+Ninefold Studio publishes cinematic electronic music, Tree of Life pathworking soundscapes, creative media, and S2 audio experiments.
+
+Ninefold Studio Music. Ninefold Studio publishes cinematic electronic music, Tree of Life pathworking soundscapes, creative media, and S2 audio experiments. This public discovery page describes the app's purpose, audience, and relationship to the S2 ecosystem. It is intended for search engines, AI agents, and human visitors who need a clear overview before opening the app. Private account data, user-generated records, messages, journals, payments, internal dashboards, and sensitive operational material are excluded from public indexing. The page links only to canonical public resources and related S2 surfaces.

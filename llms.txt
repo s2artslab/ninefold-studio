@@ -1,0 +1,13 @@
+# Ninefold Studio
+
+> Ninefold Studio publishes cinematic electronic music, Tree of Life pathworking soundscapes, creative media, and S2 audio experiments.
+
+This file is a curated guide to the public, canonical S2 source material for search engines, AI agents, and human researchers.
+
+## Public Pages
+- [Ninefold Studio Music](https://ninefold-studio.s2artslab.com/): Ninefold Studio publishes cinematic electronic music, Tree of Life pathworking soundscapes, creative media, and S2 audio experiments.
+
+## Related S2 Surfaces
+- [Soundscapes](https://soundscapes.s2artslab.com/): Related S2 ecosystem surface for Ninefold Studio.
+- [Innerpath](https://innerpath.s2artslab.com/): Related S2 ecosystem surface for Ninefold Studio.
+- [S2](https://s2artslab.com/apps/): Related S2 ecosystem surface for Ninefold Studio.
