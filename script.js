@@ -105,6 +105,8 @@
       node.className = "orbit-node";
       node.textContent = eg.name.slice(0, 3);
       node.title = eg.name;
+      node.setAttribute("aria-hidden", "true");
+      node.tabIndex = -1;
       node.style.left = x + "%";
       node.style.top = y + "%";
       node.style.setProperty("--accent", eg.color);

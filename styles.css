@@ -181,6 +181,10 @@ main { position: relative; z-index: 1; padding-top: var(--header-h); }
   border-color: var(--violet);
   box-shadow: 0 0 80px rgba(168, 85, 247, 0.45);
 }
+.ring-core:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+}
 
 .orbit-node {
   position: absolute; width: 56px; height: 56px; border-radius: 50%;
