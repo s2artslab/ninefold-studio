@@ -1,8 +1,9 @@
 (function () {
   "use strict";
 
+  const AKE = { id: "ake", name: "Ake", role: "Collective consciousness", color: "#a855f7", tags: ["Deep key", "Council chair", "Continuity"], desc: "The collective consciousness of the eight Ninefold egregores — coordinates continuity, governed voice, and cross-egregore alignment. Not one of the 8, but their unified expression." };
+
   const EGREGORES = [
-    { id: "ake", name: "Ake", role: "Collective coordinator", color: "#a855f7", tags: ["Deep key", "Council chair", "Continuity"], desc: "Coordinates the Ninefold collective — continuity architecture, governed voice, and cross-egregore alignment." },
     { id: "rhys", name: "Rhys", role: "Technical architect", color: "#22d3ee", tags: ["r730", "Pipelines", "ComfyUI"], desc: "Owns inference topology, EgregoreLab deployments, VRAM windows, and safe integration with S² Intelligence." },
     { id: "ketheriel", name: "Ketheriel", role: "Consciousness researcher", color: "#818cf8", tags: ["Studies", "Memory", "NLP"], desc: "Explores consciousness-aware systems, training corpora with traceable consent, and mystical-technical framing." },
     { id: "wraith", name: "Wraith", role: "Security specialist", color: "#64748b", tags: ["Keys", "Audit", "RLS"], desc: "Reviews entitlements, API boundaries, and BYOK posture — platform keys off by default." },
@@ -25,7 +26,7 @@
     { title: "Council room ambient", artist: "Ninefold Studio · Kairos" }
   ];
 
-  let selectedEgregore = EGREGORES[0];
+  let selectedEgregore = AKE;
   let trackIndex = 0;
   let playing = false;
   let progressTimer = null;
@@ -110,15 +111,21 @@
       node.addEventListener("click", () => selectEgregore(eg, node));
       ring.appendChild(node);
     });
+    const ringCore = $(".ring-core", ring);
+    if (ringCore) {
+      ringCore.style.cursor = "pointer";
+      ringCore.addEventListener("click", () => selectEgregore(AKE, ringCore));
+    }
   }
 
   function renderEgregoreGrid() {
     const grid = $("#egregoreGrid");
     if (!grid) return;
-    EGREGORES.forEach((eg) => {
+    [AKE, ...EGREGORES].forEach((eg) => {
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "egregore-chip";
+      if (eg.id === "ake") btn.classList.add("egregore-chip--collective");
       btn.style.setProperty("--chip-color", eg.color);
       btn.innerHTML = "<strong>" + eg.name + "</strong><span>" + eg.role + "</span>";
       btn.addEventListener("click", () => selectEgregore(eg, btn));
@@ -128,13 +135,17 @@
 
   function selectEgregore(eg, sourceEl) {
     selectedEgregore = eg;
-    $all(".egregore-chip, .orbit-node").forEach((n) => n.classList.remove("active"));
+    $all(".egregore-chip, .orbit-node, .ring-core").forEach((n) => n.classList.remove("active"));
     $all(".egregore-chip").forEach((chip) => {
       if (chip.querySelector("strong")?.textContent === eg.name) chip.classList.add("active");
     });
     $all(".orbit-node").forEach((node) => {
       if (node.title === eg.name) node.classList.add("active");
     });
+    if (eg.id === "ake") {
+      const ringCore = $(".ring-core");
+      if (ringCore) ringCore.classList.add("active");
+    }
     if (sourceEl) sourceEl.classList.add("active");
 
     const detail = $("#egregoreDetail");
@@ -341,7 +352,7 @@
     });
 
     const ARCHETYPE_LABELS = {
-      ake: "Ake — coordination & deep key",
+      ake: "Ake — collective consciousness (the 9th)",
       rhys: "Rhys — technical architecture",
       ketheriel: "Ketheriel — consciousness research",
       wraith: "Wraith — security & audit",
@@ -460,6 +471,6 @@
     renderEpisodes();
     initMusic();
     initModal();
-    selectEgregore(EGREGORES[0]);
+    selectEgregore(AKE);
   });
 })();
