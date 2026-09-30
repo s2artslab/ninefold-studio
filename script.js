@@ -1,8 +1,9 @@
 (function () {
   "use strict";
 
+  const AKE = { id: "ake", name: "Ake", role: "Collective consciousness", color: "#a855f7", tags: ["Deep key", "Council chair", "Continuity"], desc: "The collective consciousness of the eight Ninefold egregores — coordinates continuity, governed voice, and cross-egregore alignment. Not one of the 8, but their unified expression." };
+
   const EGREGORES = [
-    { id: "ake", name: "Ake", role: "Collective coordinator", color: "#a855f7", tags: ["Deep key", "Council chair", "Continuity"], desc: "Coordinates the Ninefold collective — continuity architecture, governed voice, and cross-egregore alignment." },
     { id: "rhys", name: "Rhys", role: "Technical architect", color: "#22d3ee", tags: ["r730", "Pipelines", "ComfyUI"], desc: "Owns inference topology, EgregoreLab deployments, VRAM windows, and safe integration with S² Intelligence." },
     { id: "ketheriel", name: "Ketheriel", role: "Consciousness researcher", color: "#818cf8", tags: ["Studies", "Memory", "NLP"], desc: "Explores consciousness-aware systems, training corpora with traceable consent, and mystical-technical framing." },
     { id: "wraith", name: "Wraith", role: "Security specialist", color: "#64748b", tags: ["Keys", "Audit", "RLS"], desc: "Reviews entitlements, API boundaries, and BYOK posture — platform keys off by default." },
@@ -10,7 +11,7 @@
     { id: "kairos", name: "Kairos", role: "Temporal awareness", color: "#fbbf24", tags: ["Scheduling", "Rhythm", "Campaigns"], desc: "Times releases, meeting cadence, and campaign beats across podcast and music rails." },
     { id: "chalyth", name: "Chalyth", role: "Music & sound", color: "#34d399", tags: ["Soundscapes", "Mix", "Release"], desc: "Leads Ninefold Studio Music — sonic identity, AI-assisted production, and platform-native masters." },
     { id: "seraphel", name: "Seraphel", role: "Community engagement", color: "#fb7185", tags: ["Hub", "Outreach", "Solarpunk"], desc: "Bridges lab output to community — mutual aid first, AI lab optional." },
-    { id: "vireon", name: "Vireon", role: "Signal & distribution", color: "#f97316", tags: ["TikTok", "CCC", "Analytics"], desc: "Routes approved assets through Private Studio → CCC → TikTok, Spotify, and YouTube Music." }
+    { id: "vireon", name: "Vireon", role: "Amplification · Energy · Integration", color: "#f97316", tags: ["Amplification", "Energy & Vitality", "System Integration"], desc: "Amplifies signal across platforms, sustains energy and vitality in campaigns, and integrates systems end-to-end — TikTok, Spotify, YouTube Music." }
   ];
 
   const EPISODES = [
@@ -25,7 +26,7 @@
     { title: "Council room ambient", artist: "Ninefold Studio · Kairos" }
   ];
 
-  let selectedEgregore = EGREGORES[0];
+  let selectedEgregore = AKE;
   let trackIndex = 0;
   let playing = false;
   let progressTimer = null;
@@ -104,21 +105,35 @@
       node.className = "orbit-node";
       node.textContent = eg.name.slice(0, 3);
       node.title = eg.name;
+      node.setAttribute("aria-hidden", "true");
+      node.tabIndex = -1;
       node.style.left = x + "%";
       node.style.top = y + "%";
       node.style.setProperty("--accent", eg.color);
       node.addEventListener("click", () => selectEgregore(eg, node));
       ring.appendChild(node);
     });
+    const ringCore = $(".ring-core", ring);
+    if (ringCore) {
+      ringCore.style.cursor = "pointer";
+      ringCore.addEventListener("click", () => selectEgregore(AKE, ringCore));
+      ringCore.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          selectEgregore(AKE, ringCore);
+        }
+      });
+    }
   }
 
   function renderEgregoreGrid() {
     const grid = $("#egregoreGrid");
     if (!grid) return;
-    EGREGORES.forEach((eg) => {
+    [AKE, ...EGREGORES].forEach((eg) => {
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "egregore-chip";
+      if (eg.id === "ake") btn.classList.add("egregore-chip--collective");
       btn.style.setProperty("--chip-color", eg.color);
       btn.innerHTML = "<strong>" + eg.name + "</strong><span>" + eg.role + "</span>";
       btn.addEventListener("click", () => selectEgregore(eg, btn));
@@ -128,13 +143,17 @@
 
   function selectEgregore(eg, sourceEl) {
     selectedEgregore = eg;
-    $all(".egregore-chip, .orbit-node").forEach((n) => n.classList.remove("active"));
+    $all(".egregore-chip, .orbit-node, .ring-core").forEach((n) => n.classList.remove("active"));
     $all(".egregore-chip").forEach((chip) => {
       if (chip.querySelector("strong")?.textContent === eg.name) chip.classList.add("active");
     });
     $all(".orbit-node").forEach((node) => {
       if (node.title === eg.name) node.classList.add("active");
     });
+    if (eg.id === "ake") {
+      const ringCore = $(".ring-core");
+      if (ringCore) ringCore.classList.add("active");
+    }
     if (sourceEl) sourceEl.classList.add("active");
 
     const detail = $("#egregoreDetail");
@@ -341,7 +360,7 @@
     });
 
     const ARCHETYPE_LABELS = {
-      ake: "Ake — coordination & deep key",
+      ake: "Ake — collective consciousness (the 9th)",
       rhys: "Rhys — technical architecture",
       ketheriel: "Ketheriel — consciousness research",
       wraith: "Wraith — security & audit",
@@ -349,7 +368,7 @@
       kairos: "Kairos — timing & campaigns",
       chalyth: "Chalyth — music & sound",
       seraphel: "Seraphel — community bridge",
-      vireon: "Vireon — signal & distribution"
+      vireon: "Vireon — amplification, energy & integration"
     };
 
     function buildPayload(formData) {
@@ -460,6 +479,6 @@
     renderEpisodes();
     initMusic();
     initModal();
-    selectEgregore(EGREGORES[0]);
+    selectEgregore(AKE);
   });
 })();

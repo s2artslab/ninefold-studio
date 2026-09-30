@@ -177,6 +177,14 @@ main { position: relative; z-index: 1; padding-top: var(--header-h); }
 }
 .ring-core span { font-family: var(--display); font-size: 1.25rem; }
 .ring-core small { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; }
+.ring-core.active {
+  border-color: var(--violet);
+  box-shadow: 0 0 80px rgba(168, 85, 247, 0.45);
+}
+.ring-core:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+}
 
 .orbit-node {
   position: absolute; width: 56px; height: 56px; border-radius: 50%;
@@ -259,6 +267,9 @@ main { position: relative; z-index: 1; padding-top: var(--header-h); }
 .egregore-chip:hover, .egregore-chip.active {
   border-color: var(--chip-color, var(--violet));
   background: color-mix(in srgb, var(--chip-color, var(--violet)) 12%, transparent);
+}
+.egregore-chip--collective {
+  border-style: dashed;
 }
 .egregore-chip strong { display: block; font-size: 0.95rem; margin-bottom: 0.25rem; }
 .egregore-chip span { font-size: 0.75rem; color: var(--muted); }
