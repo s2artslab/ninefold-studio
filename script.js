@@ -11,7 +11,7 @@
     { id: "kairos", name: "Kairos", role: "Temporal awareness", color: "#fbbf24", tags: ["Scheduling", "Rhythm", "Campaigns"], desc: "Times releases, meeting cadence, and campaign beats across podcast and music rails." },
     { id: "chalyth", name: "Chalyth", role: "Music & sound", color: "#34d399", tags: ["Soundscapes", "Mix", "Release"], desc: "Leads Ninefold Studio Music — sonic identity, AI-assisted production, and platform-native masters." },
     { id: "seraphel", name: "Seraphel", role: "Community engagement", color: "#fb7185", tags: ["Hub", "Outreach", "Solarpunk"], desc: "Bridges lab output to community — mutual aid first, AI lab optional." },
-    { id: "vireon", name: "Vireon", role: "Signal & distribution", color: "#f97316", tags: ["TikTok", "CCC", "Analytics"], desc: "Routes approved assets through Private Studio → CCC → TikTok, Spotify, and YouTube Music." }
+    { id: "vireon", name: "Vireon", role: "Amplification · Energy · Integration", color: "#f97316", tags: ["Amplification", "Energy & Vitality", "System Integration"], desc: "Amplifies signal across platforms, sustains energy and vitality in campaigns, and integrates systems end-to-end — TikTok, Spotify, YouTube Music." }
   ];
 
   const EPISODES = [
@@ -115,6 +115,12 @@
     if (ringCore) {
       ringCore.style.cursor = "pointer";
       ringCore.addEventListener("click", () => selectEgregore(AKE, ringCore));
+      ringCore.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          selectEgregore(AKE, ringCore);
+        }
+      });
     }
   }
 
@@ -360,7 +366,7 @@
       kairos: "Kairos — timing & campaigns",
       chalyth: "Chalyth — music & sound",
       seraphel: "Seraphel — community bridge",
-      vireon: "Vireon — signal & distribution"
+      vireon: "Vireon — amplification, energy & integration"
     };
 
     function buildPayload(formData) {
